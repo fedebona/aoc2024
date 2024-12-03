@@ -6,7 +6,6 @@ def P1(f):
         safes.append(IsSafe(report))
     return sum(safes)
 
-
 def P2(f):
     safes = 0
     for x in f:
@@ -15,6 +14,7 @@ def P2(f):
         if safe == 1:
             safes += 1
             continue
+        # Try removing one element at a time and check if it's safe
         for i in range(len(report)):
             report2 = report.copy()
             report2.pop(i)
@@ -24,8 +24,6 @@ def P2(f):
     return safes
 
 # Return 0 if not safe or 1 if safe, so I can sum the results
-
-
 def IsSafe(report):
     for i in range(len(report)-1):
         diff = report[i+1] - report[i]
@@ -39,7 +37,6 @@ def IsSafe(report):
         if diff > 0 and not ascending:
             return 0
     return 1
-
 
 f = open("resources\day02.txt", "r")
 print(f"Day 2/1: {P1(f)}")

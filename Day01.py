@@ -13,7 +13,6 @@ def P1(f):
         distance += abs(list1[i] - list2[i])
     return distance
 
-
 def P2(f):
     list1 = []
     list2 = []
@@ -25,7 +24,6 @@ def P2(f):
     for x in list1:
         similarity += (x * list2.count(x))
     return similarity
-
 
 f = open("resources\day01.txt", "r")
 print(f"Day 1/1: {P1(f)}")
