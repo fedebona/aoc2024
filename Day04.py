@@ -1,4 +1,4 @@
-# day 4vadvent of code 2024
+# day 4 advent of code 2024
 
 def P1(map, WordToFind):
     FoundCount = 0
