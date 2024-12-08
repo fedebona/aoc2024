@@ -1,26 +1,26 @@
 # day 6 advent of code 2024
 import copy
-
 class Point:
-    def __init__(self, x, y, value):
+    def __init__(self, x, y, direction):
         self.x = x
         self.y = y
-        self.value = value
+        self.direction = direction
+
     def __eq__(self, other):
         if isinstance(other, Point):
-            return self.x == other.x and self.y == other.y and self.value == other.value
+            return self.x == other.x and self.y == other.y and self.direction == other.direction
         return False
+
     def __iter__(self):
         yield self.x
         yield self.y
-        yield self.value
+        yield self.direction
+
     def __hash__(self):
-        return hash((self.x, self.y, self.value))
+        return hash((self.x, self.y, self.direction))
+
     def SamePosition(self, other):
         return self.x == other.x and self.y == other.y
-
-def P1(map):
-    return Quit(map, FindPoint(map, '^'))
 
 # Navigates from starting point to exit. returns -1 if loop, -2 if fail, otherwise number of visited points
 def Quit(currentMap, startingPoint):
@@ -35,25 +35,9 @@ def Quit(currentMap, startingPoint):
             visited += 1
             currentMap[currentPoint.y][currentPoint.x] = 'X'
         currentPoint = NextPoint(currentMap, currentPoint)
-        if currentPoint.value == 'fail':
+        if currentPoint.direction == 'fail':
             return -2  # fail
     return visited
-
-def P2(originalMap, map):
-    startingPoint = FindPoint(originalMap, '^')
-    loops = 0
-    fails = 0
-    for y in range(len(map)):
-        for x in range(len(map[y])):
-            current = Point(x, y, map[y][x])
-            if current.value == 'X' and not current.SamePosition(startingPoint):
-                currentMap = copy.deepcopy(originalMap)
-                currentMap[current.y][current.x] = '#'
-                if Quit(currentMap, startingPoint) == -1:
-                    loops += 1
-                elif Quit(currentMap, startingPoint) == -2:
-                    fails += 1
-    return loops
 
 def FindPoint(map, symbol):
     for y in range(len(map)):
@@ -69,32 +53,33 @@ def IsInMap(map, point):
 def NextPoint(map, point):
     nextPoint = StraightDirection(point)
     if not IsInMap(map, nextPoint):
-        return Point(-1, -1, point.value)
+        return Point(-1, -1, point.direction)
     while map[nextPoint.y][nextPoint.x] == '#' and IsInMap(map, nextPoint):
-        nextPoint = SwitchDirection(Point(point.x, point.y, nextPoint.value))
+        nextPoint = SwitchDirection(
+            Point(point.x, point.y, nextPoint.direction))
     return nextPoint
 
 # Returns the next point in case of obstacle, switches direction
 def SwitchDirection(point):
-    if point.value == '^':
+    if point.direction == '^':
         return MoveRight(point)
-    if point.value == '>':
+    if point.direction == '>':
         return MoveDown(point)
-    if point.value == 'v':
+    if point.direction == 'v':
         return MoveLeft(point)
-    if point.value == '<':
+    if point.direction == '<':
         return MoveUp(point)
     return Point(-1, -1, "fail")
 
 # Returns the next point in case of no obstacle
 def StraightDirection(point):
-    if point.value == '^':
+    if point.direction == '^':
         return MoveUp(point)
-    if point.value == '>':
+    if point.direction == '>':
         return MoveRight(point)
-    if point.value == 'v':
+    if point.direction == 'v':
         return MoveDown(point)
-    if point.value == '<':
+    if point.direction == '<':
         return MoveLeft(point)
     return Point(-1, -1, "fail")
 
@@ -115,6 +100,27 @@ def ReadAllMap(f):
     for line in f:
         map.append(list(line.strip()))
     return map
+
+def P1(map):
+    return Quit(map, FindPoint(map, '^'))
+
+def P2(originalMap, map):
+    startingPoint = FindPoint(originalMap, '^')
+    loops = 0
+    fails = 0
+    # for each visited point of Part 1 and adds an obstacle to the original map and tries to navigate from starting point to exit
+    for y in range(len(map)):
+        for x in range(len(map[y])):
+            current = Point(x, y, map[y][x])
+            if current.direction == 'X' and not current.SamePosition(startingPoint):
+                # deep copy of original map
+                currentMap = copy.deepcopy(originalMap)
+                currentMap[current.y][current.x] = '#'
+                if Quit(currentMap, startingPoint) == -1:
+                    loops += 1
+                elif Quit(currentMap, startingPoint) == -2:
+                    fails += 1  # should not happen
+    return loops
 
 f = open("resources\day06.txt", "r")
 originalMap = ReadAllMap(f)
