@@ -1,7 +1,4 @@
 # day 10 advent of code 2024
-import copy
-
-
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -110,14 +107,13 @@ def P1(map):
     scores = [Score(map, point) for point in startingPositions]
     return sum(scores)
 
-def P2(originalMap, map):
+def P2(map):
     startingPositions = FindAllPoints(map, 0)
     ratings = [Rating(map, point) for point in startingPositions]
     return sum(ratings)
 
 f = open("resources\day10.txt", "r")
-originalMap = ReadAllMap(f)
-map = copy.deepcopy(originalMap)
+map = ReadAllMap(f)
 f.close()
 print(f"Day 10/1: {P1(map)}")
-print(f"Day 10/2: {P2(originalMap, map)}")
+print(f"Day 10/2: {P2(map)}")
