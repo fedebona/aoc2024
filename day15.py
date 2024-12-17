@@ -132,12 +132,151 @@ def P1(map, moves):
     return CalculateBoxes(boxes)
 
 def P2(map, moves):
-    return 
+    p = FindPoint(map, '@')
+    for move in moves:
+        if move == '^':
+            nextPoint = Point(p.x, p.y - 1)
+            if map[nextPoint.y][nextPoint.x] == '#':
+                continue
+            if map[nextPoint.y][nextPoint.x] == '.':
+                map[p.y][p.x] = '.'
+                map[nextPoint.y][nextPoint.x] = '@'
+                p = nextPoint
+                continue
+            if map[nextPoint.y][nextPoint.x] == '[':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x, pushedPoint.y - 1)
+                    if map[pushedPoint.y][pushedPoint.x] == '.' and map[pushedPoint.y][pushedPoint.x + 1] == '.':
+                        space = True
+                        break
+                if space:
+                    map[p.y][p.x] = '.'
+                    map[p.y][p.x + 1] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    map[pushedPoint.y][pushedPoint.x] = '['
+                    map[pushedPoint.y][pushedPoint.x + 1] = ']'
+                    p = nextPoint
+                    continue
+            if map[nextPoint.y][nextPoint.x] == ']':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x, pushedPoint.y - 1)
+                    if map[pushedPoint.y][pushedPoint.x] == '.' and map[pushedPoint.y][pushedPoint.x - 1] == '.':
+                        space = True
+                        break
+                if space:
+                    map[p.y][p.x] = '.'
+                    map[p.y][p.x - 1] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    map[pushedPoint.y][pushedPoint.x] = ']'
+                    map[pushedPoint.y][pushedPoint.x - 1] = '['
+                    p = nextPoint
+                    continue                
+        elif move == 'v':
+            nextPoint = Point(p.x, p.y + 1)
+            if map[nextPoint.y][nextPoint.x] == '#':
+                continue
+            if map[nextPoint.y][nextPoint.x] == '.':
+                map[p.y][p.x] = '.'
+                map[nextPoint.y][nextPoint.x] = '@'
+                p = nextPoint
+                continue  
+            if map[nextPoint.y][nextPoint.x] == '[':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x, pushedPoint.y + 1)
+                    if map[pushedPoint.y][pushedPoint.x] == '.' and map[pushedPoint.y][pushedPoint.x + 1] == '.':
+                        space = True
+                        break
+                if space:
+                    map[p.y][p.x] = '.'
+                    map[p.y][p.x + 1] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    map[pushedPoint.y][pushedPoint.x] = '['
+                    map[pushedPoint.y][pushedPoint.x + 1] = ']'
+                    p = nextPoint
+                    continue
+            if map[nextPoint.y][nextPoint.x] == ']':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x, pushedPoint.y + 1)
+                    if map[pushedPoint.y][pushedPoint.x] == '.' and map[pushedPoint.y][pushedPoint.x - 1] == '.':
+                        space = True
+                        break
+                if space:
+                    map[p.y][p.x] = '.'
+                    map[p.y][p.x - 1] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    map[pushedPoint.y][pushedPoint.x] = ']'
+                    map[pushedPoint.y][pushedPoint.x - 1] = '['
+                    p = nextPoint
+                    continue   
+        elif move == '<':
+            nextPoint = Point(p.x - 1, p.y)
+            if map[nextPoint.y][nextPoint.x] == '#':
+                continue  
+            if map[nextPoint.y][nextPoint.x] == '.':
+                map[p.y][p.x] = '.'
+                map[nextPoint.y][nextPoint.x] = '@'
+                p = nextPoint
+                continue       
+            if map[nextPoint.y][nextPoint.x] == ']':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x - 1, pushedPoint.y)
+                    if map[pushedPoint.y][pushedPoint.x] == '.':
+                        space = True
+                        break
+                if space:
+                    while pushedPoint.x != nextPoint.x:
+                        tmp = map[pushedPoint.y][pushedPoint.x]
+                        map[pushedPoint.y][pushedPoint.x] = map[pushedPoint.y][pushedPoint.x + 1]
+                        map[pushedPoint.y][pushedPoint.x + 1] = tmp
+                        pushedPoint = Point(pushedPoint.x + 1, pushedPoint.y)
+                    map[p.y][p.x] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    p = nextPoint
+                    continue 
+        elif move == '>':
+            nextPoint = Point(p.x + 1, p.y)
+            if map[nextPoint.y][nextPoint.x] == '#':
+                continue
+            if map[nextPoint.y][nextPoint.x] == '.':
+                map[p.y][p.x] = '.'
+                map[nextPoint.y][nextPoint.x] = '@'
+                p = nextPoint
+                continue    
+            if map[nextPoint.y][nextPoint.x] == '[':
+                space = False
+                pushedPoint = nextPoint
+                while map[pushedPoint.y][pushedPoint.x] != '#':
+                    pushedPoint = Point(pushedPoint.x + 1, pushedPoint.y)
+                    if map[pushedPoint.y][pushedPoint.x] == '.':
+                        space = True
+                        break
+                if space:
+                    while pushedPoint.x != nextPoint.x:
+                        tmp = map[pushedPoint.y][pushedPoint.x]
+                        map[pushedPoint.y][pushedPoint.x] = map[pushedPoint.y][pushedPoint.x - 1]
+                        map[pushedPoint.y][pushedPoint.x - 1] = tmp
+                        pushedPoint = Point(pushedPoint.x - 1, pushedPoint.y)                    
+                    map[p.y][p.x] = '.'
+                    map[nextPoint.y][nextPoint.x] = '@'
+                    p = nextPoint
+                    continue                    
+    boxes = FindAllPoints(map, '[')
+    return CalculateBoxes(boxes)
 
 def CalculateBoxes(boxes):
     return sum([p.y*100+p.x for p in boxes])
 
-f = open("resources\day15.txt", "r")
+f = open("resources\day15_test.txt", "r")
 map = []
 for line in f:
     if line == "\n":
@@ -146,6 +285,22 @@ for line in f:
 moves = ""   
 for line in f:
     moves += line.strip()
-f.close()
 print(f"Day 15/1: {P1(map, moves)}")
+f.seek(0)
+map = []
+for line in f:
+    if line == "\n":
+        break
+    row = ""
+    for c in line.strip():
+        if c == 'O':
+            row =  row + '[]'
+        elif c == '#':
+            row =  row + '##'
+        elif c == '@':
+            row =  row + '@.'
+        elif c == '.':
+            row =  row + '..'
+    map.append(list(row))
+f.close()
 print(f"Day 15/2: {P2(map, moves)}")
