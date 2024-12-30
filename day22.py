@@ -28,6 +28,6 @@ def P2(numbers):
 
 f = open("resources\day22.txt", "r")
 numbers = [int(x.strip()) for x in f]
-print(f"Day 4/1: {P1(numbers)}")
-print(f"Day 4/2: {P2(numbers)}")
+print(f"Day 22/1: {P1(numbers)}")
+print(f"Day 22/2: {P2(numbers)}")
 f.close()
