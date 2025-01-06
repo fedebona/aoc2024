@@ -1,4 +1,5 @@
-# day 4vadvent of code 2024
+# advent of code 2024
+day_no = 1
 
 def P1(f):
     
@@ -8,9 +9,9 @@ def P2(f):
  
     return 
 
-f = open("resources\day04.txt", "r")
-print(f"Day 4/1: {P1(f)}")
+f = open(f"resources\day{day_no:02}.txt", "r")
+print(f"Day {day_no}/1: {P1(f)}")
 f.close()
-f = open("resources\day04.txt", "r")
-print(f"Day 4/2: {P2(f)}")
+f = open(f"resources\day{day_no:02}.txt", "r")
+print(f"Day {day_no}/2: {P2(f)}")
 f.close()
